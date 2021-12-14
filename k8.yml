@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   name: nginx-deployment
   labels:
+   app: mts
     env: dev
 spec:
   replicas: 3
@@ -15,11 +16,14 @@ spec:
         env: dev
     spec:
       containers:
-      - name: nginx
-        image: nginx
+      - name: angular
+        image: ghcr.io/devonfw/my-thai-star-angular:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 80
-        apiVersion: v1
+          name: http
+
+---
 kind: Service
 metadata:
   name: nginx-svc
@@ -63,20 +67,17 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: angular
+  name: nginx-svc
   labels:
-    app: mts
-    tier: angular
+   app: mts
+    env: dev
 spec:
-  type: ClusterIP
+  type: LoadBalancer
   ports:
-  - protocol: TCP
-    port: 80
-    targetPort: http
-    name: http
+  - port: 80
   selector:
-    app: mts
-    tier: angular
+    env: dev
+     app: mts
 
 ---
 apiVersion: apps/v1
