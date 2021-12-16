@@ -1,40 +1,43 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: extensions/v1beta1
+kind: Ingress
 metadata:
-  name: nginx-deployment
-  labels:
-   app: mts
-    env: dev
+  name: java
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /mythaistar/$2
+    kubernetes.io/ingress.class: ingress-public
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:
-  replicas: 3
-  selector:
-    matchLabels:
-      env: dev
-  template:
-    metadata:
-      labels:
-        env: dev
-    spec:
-      containers:
-      - name: angular
-        image: ghcr.io/devonfw/my-thai-star-angular:latest
-        imagePullPolicy: Always
-        ports:
-        - containerPort: 80
-          name: http
-
+  tls:
+  - hosts:
+    - my-thai-star.demo.xpaas.io
+  rules:
+  - host: my-thai-star.demo.xpaas.io
+    http:
+      paths:
+      - path: /api(/)(.*)
+        backend:
+          serviceName: java
+          servicePort: 8081
 ---
-kind: Service
+apiVersion: extensions/v1beta1
+kind: Ingress
 metadata:
-  name: nginx-svc
-  labels:
-    env: dev
+  name: angular
+  annotations:
+    kubernetes.io/ingress.class: ingress-public
 spec:
-  type: LoadBalancer
-  ports:
-  - port: 80
-  selector:
-    env: dev
+  tls:
+  - hosts:
+    - my-thai-star.demo.xpaas.io
+  rules:
+  - host: my-thai-star.demo.xpaas.io
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: angular
+          servicePort: 8080
 
 ---
 apiVersion: apps/v1
