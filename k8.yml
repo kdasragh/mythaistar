@@ -4,7 +4,7 @@ metadata:
   name: java
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /mythaistar/$2
-    kubernetes.io/ingress.class: public
+    kubernetes.io/ingress.class: "Ingress public"
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:
