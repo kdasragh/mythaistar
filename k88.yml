@@ -17,7 +17,7 @@ spec:
       paths:
       - path: /api(/)(.*)
         backend:
-          serviceName: "java"
+          serviceName: java
           servicePort: 8081
 ---
 apiVersion: extensions/v1beta1
