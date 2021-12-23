@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   name: angular
   labels:
+     env: dev
     app: mts
 spec:
   selector:
@@ -13,6 +14,7 @@ spec:
   template:
     metadata:
       labels:
+        env: dev
         app: mts
         tier: angular
     spec:
@@ -30,6 +32,7 @@ kind: Service
 metadata:
   name: angular
   labels:
+    env: dev
     app: mts
     tier: angular
 spec:
@@ -49,16 +52,19 @@ kind: Deployment
 metadata:
   name: java
   labels:
+    env: dev
     app: mts
 spec:
   selector:
     matchLabels:
+      env: dev
       app: mts
       tier: java
   replicas: 1
   template:
     metadata:
       labels:
+        env: dev
         app: mts
         tier: java
     spec:
@@ -75,6 +81,7 @@ kind: Service
 metadata:
   name: java
   labels:
+    env: dev
     app: mts
     tier: java
 spec:
